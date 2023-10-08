@@ -81,7 +81,7 @@ function showDiary() {
                 class="card-img-top card-img-bottom" alt="...">
             <div class="card-body">
                 <h4 class="card-title">${diaryData[i].titleDiary}</h4>
-                <p class="card-text">${diaryData[i].diary}</p>
+                <pre class="card-text">${diaryData[i].diary}</pre>
             </div>
             `;
         } else {
@@ -91,10 +91,11 @@ function showDiary() {
             </div>
             <div class="card-body">
                 <h4 class="card-title">${diaryData[i].titleDiary}</h4>
-                <p class="card-text">${diaryData[i].diary}</p>
+                <pre class="card-text">${diaryData[i].diary}</pre>
             </div>
             `;
         }
+        console.log(diaryData[i].diary);
         diaryList.appendChild(card);
     }
 }
