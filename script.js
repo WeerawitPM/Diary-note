@@ -1,12 +1,12 @@
 let button_hover = document.getElementById("button_hover");
 let icon_hover = document.getElementById("icon_hover");
 
-button_hover.addEventListener("mouseover", function() {
+button_hover.addEventListener("mouseover", function () {
     icon_hover.classList.remove("fa-plus");
     icon_hover.classList.add("fa-pencil");
 });
 
-button_hover.addEventListener("mouseout", function() {
+button_hover.addEventListener("mouseout", function () {
     icon_hover.classList.remove("fa-pencil");
     icon_hover.classList.add("fa-plus");
 });
@@ -18,6 +18,7 @@ const jsonData = localStorage.getItem("diaryData");
 
 if (jsonData) {
     diaryData = JSON.parse(jsonData);
+    showDiary();
 } else {
     // ถ้าไม่มีข้อมูลใน LocalStorage ให้กำหนดให้ budgetData เป็นอาร์เรย์ว่าง
     localStorage.setItem("diaryData", []);
@@ -59,4 +60,41 @@ function addDiary() {
             });
         }
     });
+}
+
+function showDiary() {
+    let diaryList = document.getElementById("diaryList");
+
+    for (let i = 0; i < diaryData.length; i++) {
+        let card = document.createElement("div");
+        card.classList.add("card");
+        card.classList.add("mb-3");
+        card.classList.add("mx-2")
+        card.style.maxWidth = "48%";
+        card.style.minWidth = "20%";
+        if (diaryData[i].imageDiary) {
+            card.innerHTML = `
+            <div class="card-header text-end">
+                <button class="fa fa-trash fs-5 btn border-0 btn-sm"></button>
+            </div>
+            <img src="${diaryData[i].imageDiary}"
+                class="card-img-top card-img-bottom" alt="...">
+            <div class="card-body">
+                <h4 class="card-title">${diaryData[i].titleDiary}</h4>
+                <p class="card-text">${diaryData[i].diary}</p>
+            </div>
+            `;
+        } else {
+            card.innerHTML = `
+            <div class="card-header text-end">
+                <button class="fa fa-trash fs-5 btn border-0 btn-sm"></button>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title">${diaryData[i].titleDiary}</h4>
+                <p class="card-text">${diaryData[i].diary}</p>
+            </div>
+            `;
+        }
+        diaryList.appendChild(card);
+    }
 }
