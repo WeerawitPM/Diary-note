@@ -35,6 +35,7 @@ function addDiary() {
         `,
         confirmButtonText: "Add",
         showCancelButton: true,
+        cancelButtonColor: "#d33",
         focusConfirm: false,
         preConfirm: () => {
             const titleDiary = Swal.getPopup().querySelector("#titleDiary").value;
@@ -58,6 +59,9 @@ function addDiary() {
                 icon: "success",
                 confirmButtonText: "Ok",
             });
+            let diaryList = document.getElementById("diaryList");
+            diaryList.innerHTML = "";
+            showDiary();
         }
     });
 }
@@ -75,27 +79,46 @@ function showDiary() {
         if (diaryData[i].imageDiary) {
             card.innerHTML = `
             <div class="card-header text-end">
-                <button class="fa fa-trash fs-5 btn border-0 btn-sm"></button>
+                <button class="fa fa-trash fs-5 btn border-0 btn-sm" onclick="deleteDiary(${i})"></button>
             </div>
             <img src="${diaryData[i].imageDiary}"
                 class="card-img-top card-img-bottom" alt="...">
             <div class="card-body">
                 <h4 class="card-title">${diaryData[i].titleDiary}</h4>
-                <pre class="card-text">${diaryData[i].diary}</pre>
+                <pre class="card-text fs-6">${diaryData[i].diary}</pre>
             </div>
             `;
         } else {
             card.innerHTML = `
             <div class="card-header text-end">
-                <button class="fa fa-trash fs-5 btn border-0 btn-sm"></button>
+                <button class="fa fa-trash fs-5 btn border-0 btn-sm" onclick="deleteDiary(${i})"></button>
             </div>
             <div class="card-body">
                 <h4 class="card-title">${diaryData[i].titleDiary}</h4>
-                <pre class="card-text">${diaryData[i].diary}</pre>
+                <pre class="card-text fs-6">${diaryData[i].diary}</pre>
             </div>
             `;
         }
-        console.log(diaryData[i].diary);
         diaryList.appendChild(card);
     }
+}
+
+function deleteDiary(index) {
+    Swal.fire({
+        title: "ต้องการลบไดอารี่นี้ใช่หรือไม่?",
+        text: "การลบไดอารี่นี้จะไม่สามารถกู้คืนได้",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            diaryData.splice(index, 1);
+            localStorage.setItem("diaryData", JSON.stringify(diaryData));
+            let diaryList = document.getElementById("diaryList");
+            diaryList.innerHTML = "";
+            showDiary();
+        }
+    });
 }
